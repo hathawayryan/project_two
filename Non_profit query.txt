@@ -1,17 +1,9 @@
--- Create a new table
+--CREATE INCOME TABLE FROM BEA EXCEL SHEET
 CREATE TABLE income (
   id INTEGER primary key,
-  county VARCHAR(45) NOT NULL,
-  year VARCHAR(45) NOT NULL,
   state VARCHAR(45) NOT NULL,
-  per_capita_income VARCHAR(45) NOT NULL,
-  percent_change_yoy VARCHAR(45) NULL
+  county VARCHAR(45) NOT NULL,
+  year SMALLINT NOT NULL,  
+  per_capita_income DECIMAL NOT NULL,
+  percent_change_yoy DECIMAL NULL
 );
-
---this will not work
-ALTER TABLE income
-ALTER COLUMN year TYPE INTEGER;
-
-select * from income
-;
-
