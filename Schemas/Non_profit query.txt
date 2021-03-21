@@ -4,6 +4,6 @@ CREATE TABLE income (
   state VARCHAR(45) NOT NULL,
   county VARCHAR(45) NOT NULL,
   year SMALLINT NOT NULL,  
-  per_capita_income DECIMAL NOT NULL,
-  percent_change_yoy DECIMAL NULL
+  per_capita_income INTEGER NOT NULL,
+  percent_change_yoy VARCHAR(45) NULL
 );
