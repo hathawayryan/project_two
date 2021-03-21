@@ -1,0 +1,9 @@
+--CREATE INCOME TABLE FROM BEA EXCEL SHEET
+CREATE TABLE income (
+  id INTEGER primary key,
+  state VARCHAR(45) NOT NULL,
+  county VARCHAR(45) NOT NULL,
+  year SMALLINT NOT NULL,  
+  per_capita_income DECIMAL NOT NULL,
+  percent_change_yoy DECIMAL NULL
+);
