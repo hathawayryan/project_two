@@ -29,7 +29,7 @@ var chartGroup = svg.append("g")
 
 
 // Load data 
-d3.csv("/Data sources/Personal Income by county.csv").then(function(incomeData) {
+d3.json("/data").then(function(incomeData) {
 
   // Print data
   console.log(incomeData);
