@@ -13,7 +13,9 @@ def home_page():
 
 @app.route('/data')
 def send_data():
-    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password='Bobo90'")  
+
+    #Add in your pgadmin password here
+    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password='yourPassword'")  
     cur = con.cursor()
     cur.execute("""select * from  income""")
     data = [col for col in cur]
