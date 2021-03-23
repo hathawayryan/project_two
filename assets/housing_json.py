@@ -9,9 +9,15 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route("/housing_income")
+def housing_income():
+    return render_template("housing_income.html")
+
+
+
 @app.route('/data')
 def send_data():
-    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password='{password_here}'")  
+    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password='Deercreek7'")  
     cur = con.cursor()
     cur.execute("""select * from  house_median_prices""")
     data = [col for col in cur]
