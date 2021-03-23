@@ -15,12 +15,12 @@ def home_page():
 def send_data():
 
     #Add in your pgadmin password here
-    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password='yourPassword'")  
+    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password='Bobo90'")  
     cur = con.cursor()
     cur.execute("""select * from  income""")
     data = [col for col in cur]
     cur.close()
-    print(data)
+    #print(data)
     return jsonify(data)
 
 @app.route('/chart1')
