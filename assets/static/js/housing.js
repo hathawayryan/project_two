@@ -1,3 +1,7 @@
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
 
     var medians_2017 = [];
@@ -54,6 +58,77 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
             ratio_2019.push(medians_2019[i]/incomes_2019[i])
         }
 
+        var combined_list_2017 = [];
+        for (i = 0; i < incomes_2017.length; i++) {
+            combined_list_2017.push([county_names[i],ratio_2017[i],
+            medians_2017[i], incomes_2017[i]]);
+        }
+
+        combined_list_2017.sort(function compareFunction(firstNum, secondNum) {
+            // resulting order is (3, 2, 1)
+            return secondNum[1] - firstNum[1];
+        });
+
+        sliced_2017 = combined_list_2017.slice(0, 10);
+        console.log(sliced_2017);
+
+        var combined_list_2018 = [];
+        for (i = 0; i < incomes_2018.length; i++) {
+            combined_list_2018.push([county_names[i],ratio_2018[i],
+            medians_2018[i], incomes_2018[i]]);
+        }
+
+        combined_list_2018.sort(function compareFunction(firstNum, secondNum) {
+            // resulting order is (3, 2, 1)
+            return secondNum[1] - firstNum[1];
+        });
+
+        sliced_2018 = combined_list_2018.slice(0, 10);
+        console.log(sliced_2018);
+
+        var combined_list_2019 = [];
+        for (i = 0; i < incomes_2019.length; i++) {
+            combined_list_2019.push([county_names[i],ratio_2019[i],
+            medians_2019[i], incomes_2019[i]]);
+        }
+
+        combined_list_2019.sort(function compareFunction(firstNum, secondNum) {
+            // resulting order is (3, 2, 1)
+            return secondNum[1] - firstNum[1];
+        });
+
+        sliced_2019 = combined_list_2019.slice(0, 10);
+        console.log(sliced_2019);
+
+        var tbody = d3.select("tbody");
+
+        function makeTable(sliced_year) {
+            // Prevent the page from refreshing
+            //d3.event.preventDefault();
+        
+            tbody.selectAll("tr").remove(); 
+        
+            sliced_year.forEach(function(county) {
+                // selects only data from the filter date
+        
+                // makes new row in table
+                var row = tbody.append("tr");
+
+                var cell = row.append("td");
+                cell.text(county[0]);
+
+                var cell = row.append("td");
+                cell.text(county[1].toFixed(2));
+
+                var cell = row.append("td");
+                cell.text(numberWithCommas(county[2]));
+
+                var cell = row.append("td");
+                cell.text(numberWithCommas(county[3]));
+    
+              });
+          };
+
 
     function init(){
         var trace1 = {
@@ -73,7 +148,8 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
         var data = [trace1];
         
         var layout = {
-            title: "Median Housing Cost vs Median Income",
+            title: {text: "Median Housing Cost vs Median Income",
+            color: "purple"},
             height: 600,
             xaxis: {
                 range: [0, 140000],
@@ -86,6 +162,8 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
         };
         
         Plotly.newPlot("plot", data, layout);
+
+        makeTable(sliced_2017);
     }
 
     // Call updatePlotly() when a change takes place to the DOM
@@ -97,7 +175,6 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
         var dropdownMenu = d3.select("#selDataset");
         // Assign the value of the dropdown menu option to a variable
         var user_year = dropdownMenu.node().value; 
-        console.log(user_year);
         var CHART = d3.selectAll("#plot").node();
 
         var x = [];
@@ -114,6 +191,7 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
                     opacity: 0.7,
                     size: 15
                 };
+                sliced_year = sliced_2017;
                 break;
         
             case "2018":
@@ -125,6 +203,7 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
                     opacity: 0.7,
                     size: 15
                 };
+                sliced_year = sliced_2018;
                 break;
         
             case "2019":
@@ -136,6 +215,7 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
                     opacity: 0.7,
                     size: 15
                 };
+                sliced_year = sliced_2019;
                 break;
         
             default:
@@ -147,6 +227,7 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
                 opacity: 0.7,
                 size: 15
             };
+            sliced_year = sliced_2017;
             break;
         }
 
@@ -154,7 +235,11 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
         Plotly.restyle(CHART, "y", [y]);
         Plotly.restyle(CHART, "marker", marker);
 
+        makeTable(sliced_year);
+
     }
+
+
 
     init();
 

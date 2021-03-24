@@ -15,7 +15,6 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
     }
 
 
-
       
     d3.json("http://127.0.0.1:5000/income_data").then(function(income_data) {
         incomes_2017 = [52478];
@@ -54,6 +53,13 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
             ratio_2019.push(medians_2019[i]/incomes_2019[i])
         }
 
+        var combined_list_2017 = [];
+        for (i = 0; i < incomes_2017.length; i++) {
+            combined_list_2017.push([county_names[i],ratio_2017[i],
+            medians_2017[i], incomes_2017[i]]);
+        }
+
+        console.log(combined_list_2017);
 
     function init(){
         var trace1 = {
@@ -97,7 +103,7 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
         var dropdownMenu = d3.select("#selDataset");
         // Assign the value of the dropdown menu option to a variable
         var user_year = dropdownMenu.node().value; 
-        console.log(user_year);
+
         var CHART = d3.selectAll("#plot").node();
 
         var x = [];

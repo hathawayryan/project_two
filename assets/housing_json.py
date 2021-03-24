@@ -15,9 +15,11 @@ def housing_income():
 
 
 
+
+
 @app.route('/housing_data')
 def housing_data():
-    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password={password}}")  
+    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password=")  
     cur = con.cursor()
     cur.execute("""select * from  house_median_prices""")
     data = [col for col in cur]
@@ -27,7 +29,7 @@ def housing_data():
     
 @app.route('/income_data')
 def income_data():
-    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password={password}}")  
+    con = psycopg2.connect("host='localhost' dbname='Non_profit' user='postgres' password=")  
     cur = con.cursor()
     cur.execute("""select * from  income""")
     data = [col for col in cur]
