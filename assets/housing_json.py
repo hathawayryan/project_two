@@ -36,5 +36,9 @@ def income_data():
     cur.close()
     return jsonify(data)
 
+@app.route("/income_page")
+def income_page():
+    return render_template("income.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
