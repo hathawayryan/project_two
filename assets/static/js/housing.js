@@ -38,25 +38,125 @@ d3.json("http://127.0.0.1:5000/housing_data").then(function(data) {
 
         }
 
-    console.log(incomes_2017);
-    console.log(incomes_2018);
-    console.log(incomes_2019);
-    console.log(county_names);
+        ratio_2017 = [];
+        ratio_2018 = [];
+        ratio_2019 = [];
 
-    var trace1 = {
-        x: medians_2017,
-        y: incomes_2017,
-        mode: "markers",
-        type: "scatter"
-    };
-    
-    var data = [trace1];
-    
-    var layout = {
-        title: "'Bar' Chart"
+        for (i = 0; i < incomes_2017.length; i++) {
+            ratio_2017.push(medians_2017[i]/incomes_2017[i])
+        }
+
+        for (i = 0; i < incomes_2018.length; i++) {
+            ratio_2018.push(medians_2018[i]/incomes_2018[i])
+        }
+
+        for (i = 0; i < incomes_2019.length; i++) {
+            ratio_2019.push(medians_2019[i]/incomes_2019[i])
+        }
+
+
+    function init(){
+        var trace1 = {
+            x: incomes_2017,
+            y: medians_2017,
+            mode: "markers",
+            marker: {
+                color: ratio_2017,
+                colorscale: 'Bluered',
+                opacity: 0.7,
+                size: 15
+            },
+            text: county_names,
+            type: "bubble"
         };
-    
-    Plotly.newPlot("plot", data, layout);
+        
+        var data = [trace1];
+        
+        var layout = {
+            title: "Median Housing Cost vs Median Income",
+            height: 600,
+            xaxis: {
+                range: [0, 140000],
+                title: "Median Income ($)"
+            },
+            yaxis: {
+                range: [0, 500000],
+                title: "Median Housing Cost ($)"
+            }
+        };
+        
+        Plotly.newPlot("plot", data, layout);
+    }
+
+    // Call updatePlotly() when a change takes place to the DOM
+    d3.selectAll("body").on("change", updatePlotly);
+
+    // This function is called when a dropdown menu item is selected
+    function updatePlotly() {
+        // Use D3 to select the dropdown menu
+        var dropdownMenu = d3.select("#selDataset");
+        // Assign the value of the dropdown menu option to a variable
+        var user_year = dropdownMenu.node().value; 
+        console.log(user_year);
+        var CHART = d3.selectAll("#plot").node();
+
+        var x = [];
+        var y = [];
+        var marker = {};
+
+        switch(user_year) {
+            case "2017":
+                x = incomes_2017;
+                y = medians_2017;
+                marker = {
+                    color: ratio_2017,
+                    colorscale: 'Bluered',
+                    opacity: 0.7,
+                    size: 15
+                };
+                break;
+        
+            case "2018":
+                x = incomes_2018;
+                y = medians_2018;
+                marker = {
+                    color: ratio_2018,
+                    colorscale: 'Bluered',
+                    opacity: 0.7,
+                    size: 15
+                };
+                break;
+        
+            case "2019":
+                x = incomes_2019;
+                y = medians_2019;
+                marker = {
+                    color: ratio_2019,
+                    colorscale: 'Bluered',
+                    opacity: 0.7,
+                    size: 15
+                };
+                break;
+        
+            default:
+            x = incomes_2017;
+            y = medians_2017;
+            marker = {
+                color: ratio_2017,
+                colorscale: 'Bluered',
+                opacity: 0.7,
+                size: 15
+            };
+            break;
+        }
+
+        Plotly.restyle(CHART, "x", [x]);
+        Plotly.restyle(CHART, "y", [y]);
+        Plotly.restyle(CHART, "marker", marker);
+
+    }
+
+    init();
 
     }).catch(function(error) {
     console.log(error);
